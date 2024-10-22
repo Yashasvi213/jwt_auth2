@@ -1,5 +1,7 @@
 package com.example.demo.config;
 
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -39,12 +42,15 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest request) {
-
+    	
         this.doAuthenticate(request.getEmail(), request.getPassword());
-
+        //this step first validates the username and password
+        
+        //the next step after validation creates jwt token
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
         String token = this.helper.generateToken(userDetails);
 
+        // Include roles in the response, though it's already in the JWT.
         JwtResponse response = new JwtResponse();
         response.setJwtToken(token);
         response.setUsername(userDetails.getUsername());
@@ -53,19 +59,20 @@ public class AuthController {
     }
 
     private void doAuthenticate(String email, String password) {
+    	//This token represents the user's authentication request(credentials) but is not yet authenticated
+    	//It is basically the user's login information.
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(email, password);
         try {
-            logger.info("Authenticating user with email: {}", email);
+        	//The actual validation of the credentials is performed by the AuthenticationManager
+        	//in conjunction with the UserDetailsService
+        	
             manager.authenticate(authentication);
-            logger.info("Authentication successful for user: {}", email);
+
 
         } catch (BadCredentialsException e) {
-            logger.error("Authentication failed for user: {}", email);
-            throw new BadCredentialsException("Invalid Username or Password!!");
-        } catch (Exception e) {
-            logger.error("An unexpected error occurred during authentication for user: {}", email, e);
-            throw new RuntimeException("Authentication failed due to an unexpected error.");
+            throw new BadCredentialsException(" Invalid Username or Password  !!");
         }
+
     }
 
 

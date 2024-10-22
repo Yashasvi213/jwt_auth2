@@ -17,9 +17,11 @@ public class AppConfig {
 	//this is a method widely used for a user configuration
 	@Bean
 	public UserDetailsService userDetailsService() {
-		UserDetails u1= User.builder().username("yashasvi").password(passwordEncoder().encode("abc")).roles("ADMIN").build();
-		UserDetails u2= User.builder().username("yash").password(passwordEncoder().encode("abcd")).roles("ADMIN").build();
+		//this can be connected to db abhi static
+		UserDetails u1= User.builder().username("vaibhav").password(passwordEncoder().encode("abc")).roles("FACULTY").build();
+		UserDetails u2= User.builder().username("yash").password(passwordEncoder().encode("abcd")).roles("STUDENT").build();
 		return new InMemoryUserDetailsManager(u1,u2);
+		
 		
 	}
 	
@@ -28,8 +30,11 @@ public class AppConfig {
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+//	the AuthenticationManager typically uses an AuthenticationProvider, such as DaoAuthenticationProvider.
+//	The DaoAuthenticationProvider works with a UserDetailsService to load the user details
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration builder) throws Exception {
         return builder.getAuthenticationManager();
+        // Spring constructs an AuthenticationManager with all the components needed for authentication, including the UserDetailsService.
     }
 }

@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class JWTAthenticationEntryPoint implements AuthenticationEntryPoint {
-
+	//this commence method throws an Exception whenever an unauthorised user tries to access
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response,AuthenticationException authException) throws IOException, ServletException {
 		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
@@ -13,7 +15,10 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class User {
-	
+	private String userid;
+	private String name;
+	private String email;
+
 	@Override
 	public String toString() {
 		return "User [userid=" + userid + ", name=" + name + ", email=" + email + "]";
@@ -41,13 +46,14 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	private String userid;
-	private String name;
-	private String email;
-    public User(String id, String name, String email) {
-        this.userid = userid;
-        this.name = name;
-        this.email = email;
-    }
+	public User(String userid, String name, String email) {
+		super();
+		this.userid = userid;
+		this.name = name;
+		this.email = email;
+
+	}
+
+
 }
 

@@ -28,6 +28,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                 		auth->
                 		auth.requestMatchers("/home/**").authenticated()
+                        .requestMatchers("/faculty/**").hasRole("FACULTY")  // Only allow FACULTY to access this endpoint
+                        .requestMatchers("/student/**").hasRole("STUDENT") 
                 		.requestMatchers("/auth/login").permitAll()
                         .anyRequest()
                         .authenticated())
