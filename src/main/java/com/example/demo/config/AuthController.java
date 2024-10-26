@@ -50,7 +50,7 @@ public class AuthController {
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
         String token = this.helper.generateToken(userDetails);
 
-        // Include roles in the response, though it's already in the JWT.
+        //return this JWT token
         JwtResponse response = new JwtResponse();
         response.setJwtToken(token);
         response.setUsername(userDetails.getUsername());
